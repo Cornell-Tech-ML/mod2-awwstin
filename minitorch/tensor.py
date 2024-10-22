@@ -95,9 +95,20 @@ class Tensor:
         self.f = backend
 
     def requires_grad_(self, x: bool) -> None:
+        """Set whether the tensor requires gradient computation.
+
+        Args:
+        ----
+            x (bool): If True, gradients will be computed for this tensor.
+        """
         self.history = History()
 
     def requires_grad(self) -> bool:
+        """Check if the tensor requires gradient computation.
+
+        Returns:
+            bool: True if the tensor requires gradient, False otherwise.
+        """
         return self.history is not None
 
     def to_numpy(self) -> npt.NDArray[np.float64]:
@@ -194,6 +205,14 @@ class Tensor:
         # END CODE CHANGE (2021)
 
     def zeros(self, shape: Optional[UserShape] = None) -> Tensor:
+        """Create a tensor filled with zeros.
+
+        Args:
+            shape (Optional[UserShape]): The shape of the tensor. If None, uses self.shape.
+
+        Returns:
+            Tensor: A new tensor filled with zeros.
+        """
         def zero(shape: UserShape) -> Tensor:
             return Tensor.make(
                 [0.0] * int(operators.prod(shape)), shape, backend=self.backend
@@ -283,5 +302,109 @@ class Tensor:
         """
         return self._tensor.shape
 
-    # Functions
-    # TODO: Implement for Task 2.3.
+    @property
+    def size(self) -> int:
+        """Returns the total number of elements in the tensor."""
+        return self._tensor.size
+
+    @property
+    def dims(self) -> int:
+        """Returns the number of dimensions of the tensor."""
+        return len(self.shape)
+    
+    def __add__(self, other: TensorLike) -> Tensor:
+        other = self._ensure_tensor(other)
+        return Add.apply(self, other)
+    
+    def __sub__(self, other: TensorLike) -> Tensor:
+        other = self._ensure_tensor(other)
+        return Add.apply(self, Neg.apply(other))
+    
+    def __mul__(self, other: TensorLike) -> Tensor:
+        other = self._ensure_tensor(other)
+        return Mul.apply(self, other)
+    
+    def __lt__(self, other: TensorLike) -> Tensor:
+        other = self._ensure_tensor(other)
+        return LT.apply(self, other)
+    
+    def __eq__(self, other: TensorLike) -> Tensor:
+        other = self._ensure_tensor(other)
+        return EQ.apply(self, other)
+    
+    def __gt__(self, other: TensorLike) -> Tensor:
+        other = self._ensure_tensor(other)
+        return LT.apply(other, self)
+    
+    def __neg__(self) -> Tensor:    
+        return Neg.apply(self)
+    
+    def __radd__(self, other: TensorLike) -> Tensor:
+        return self.__add__(other)
+    
+    def __rmul__(self, other: TensorLike) -> Tensor:
+        return self.__mul__(other)
+    
+    def all(self, dim: int = None) -> Tensor:
+        if dim is not None:
+            return All.apply(self, dim)
+        else:
+            return All.apply(self.contiguous().view(int(operators.prod(self.shape))), 0)
+        
+    def is_close(self, other: TensorLike) -> Tensor:    
+        other = self._ensure_tensor(other)
+        return IsClose.apply(self, other)
+    
+    def sigmoid(self) -> Tensor:
+        return Sigmoid.apply(self)
+    
+    def relu(self) -> Tensor:
+        return ReLU.apply(self)
+    
+    def log(self) -> Tensor:
+        return Log.apply(self)
+    
+    def exp(self) -> Tensor:
+        return Exp.apply(self)
+    
+    def sum(self, dim: int = None) -> Tensor:
+        if dim is None:
+            return Sum.apply(self.contiguous().view(int(operators.prod(self.shape))), 0)
+        else:
+            return Sum.apply(self, dim)
+        
+    def mean(self, dim: int = None) -> Tensor:
+        total_elements = self.shape[dim] if dim is not None else self.size
+        return self.sum(dim) * (1.0 / total_elements)
+    
+    def permute(self, *order: int) -> Tensor:
+        return Permute.apply(self, order)
+    
+    def view(self, *shape: int) -> Tensor:
+        shape_tensor = Tensor.make(shape, (len(shape),), backend=self.backend)
+        return View.apply(self, shape_tensor)
+    
+    def zero_grad_(self) -> None:
+        self.grad = None
+
+    
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
