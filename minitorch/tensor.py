@@ -249,8 +249,8 @@ class Tensor:
         if not isinstance(other, Tensor):
             other = self.__class__.from_scalar(other, backend=self.backend)
         return other - self
-    
-    def unsqueeze(self, dim: int) -> 'Tensor':
+
+    def unsqueeze(self, dim: int) -> "Tensor":
         """Return a new Tensor with a dimension of size one inserted at the specified position.
 
         Args:
@@ -268,7 +268,9 @@ class Tensor:
 
         # Check if the dimension is within the valid range
         if not (0 <= dim <= len(self.shape)):
-            raise IndexError(f"Dimension out of range (expected to be in range of [{-len(self.shape) - 1}, {len(self.shape)}], but got {dim})")
+            raise IndexError(
+                f"Dimension out of range (expected to be in range of [{-len(self.shape) - 1}, {len(self.shape)}], but got {dim})"
+            )
 
         # Compute the new shape by inserting 1 at the specified dimension
         new_shape = list(self.shape)
@@ -284,7 +286,9 @@ class Tensor:
             new_strides.append(1)  # For the last dimension
 
         # Create a new TensorData with the new shape and strides
-        new_tensor_data = TensorData(self._tensor._storage, tuple(new_shape), tuple(new_strides))
+        new_tensor_data = TensorData(
+            self._tensor._storage, tuple(new_shape), tuple(new_strides)
+        )
 
         # Return a new Tensor with the updated TensorData and the same backend
         return Tensor(new_tensor_data, backend=self.backend)
