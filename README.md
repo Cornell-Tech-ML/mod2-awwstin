@@ -86,3 +86,76 @@ Epoch: 500/500, loss: 1.0255816962379973, correct: 50
 
 Time per epoch: 0.150s. 
 
+
+2. Diag
+
+<img width="769" alt="image" src="https://github.com/user-attachments/assets/eb2572c5-07fc-4212-84b4-12244ef8468b">
+
+<img width="762" alt="image" src="https://github.com/user-attachments/assets/85b8a6ca-7191-43f8-9578-577897ad659b">
+
+<img width="764" alt="image" src="https://github.com/user-attachments/assets/16edcc04-dd15-4183-ab37-7285532bfff2">
+
+<img width="704" alt="image" src="https://github.com/user-attachments/assets/dd1143c6-cc48-4ce8-80bf-646e1f985072">
+
+Epoch: 0/500, loss: 0, correct: 0
+Epoch: 10/500, loss: 17.266846109273946, correct: 42
+Epoch: 20/500, loss: 12.849827227647463, correct: 42
+Epoch: 30/500, loss: 9.667077109019173, correct: 44
+Epoch: 40/500, loss: 8.247851843590954, correct: 49
+Epoch: 50/500, loss: 7.435323461608583, correct: 50
+Epoch: 60/500, loss: 6.766992687430632, correct: 49
+Epoch: 70/500, loss: 6.2146118385753875, correct: 48
+Epoch: 80/500, loss: 5.756354499772747, correct: 48
+Epoch: 90/500, loss: 5.371865503136427, correct: 48
+Epoch: 100/500, loss: 5.046202867096814, correct: 48
+Epoch: 110/500, loss: 4.768901885514996, correct: 48
+Epoch: 120/500, loss: 4.5304598391688105, correct: 48
+Epoch: 130/500, loss: 4.323475940899568, correct: 48
+Epoch: 140/500, loss: 4.142046986700364, correct: 48
+Epoch: 150/500, loss: 3.9815243939498397, correct: 48
+Epoch: 160/500, loss: 3.6216871940974245, correct: 48
+Epoch: 170/500, loss: 3.463584101948923, correct: 49
+Epoch: 180/500, loss: 3.3602262103385945, correct: 49
+Epoch: 190/500, loss: 3.2676227624284273, correct: 49
+Epoch: 200/500, loss: 3.1841009684622548, correct: 49
+Epoch: 210/500, loss: 3.1089476825365705, correct: 49
+Epoch: 220/500, loss: 3.039543646815619, correct: 49
+Epoch: 230/500, loss: 2.975333020157258, correct: 49
+Epoch: 240/500, loss: 2.915236934586168, correct: 49
+Epoch: 250/500, loss: 2.8583615750219264, correct: 49
+Epoch: 260/500, loss: 2.8037695141739314, correct: 49
+Epoch: 270/500, loss: 2.4836231832934232, correct: 50
+Epoch: 280/500, loss: 2.444090585885641, correct: 50
+Epoch: 290/500, loss: 2.414245745181887, correct: 50
+Epoch: 300/500, loss: 2.3881529767235237, correct: 50
+Epoch: 310/500, loss: 2.364589160114253, correct: 49
+Epoch: 320/500, loss: 2.3423078382655804, correct: 49
+Epoch: 330/500, loss: 2.3200280500749972, correct: 49
+Epoch: 340/500, loss: 2.296503341208715, correct: 49
+Epoch: 350/500, loss: 2.2708613208296518, correct: 49
+Epoch: 360/500, loss: 2.2423628999429703, correct: 49
+Epoch: 370/500, loss: 2.2099839846793734, correct: 49
+Epoch: 380/500, loss: 2.1757800562277447, correct: 49
+Epoch: 390/500, loss: 2.1395564484569705, correct: 49
+Epoch: 400/500, loss: 2.1012957784495336, correct: 49
+Epoch: 410/500, loss: 2.0614977091808586, correct: 49
+Epoch: 420/500, loss: 2.020796961225865, correct: 49
+Epoch: 430/500, loss: 1.9797912997327947, correct: 49
+Epoch: 440/500, loss: 1.9389659749453738, correct: 49
+Epoch: 450/500, loss: 1.8986710209243332, correct: 49
+Epoch: 460/500, loss: 1.5965660403368698, correct: 50
+Epoch: 470/500, loss: 1.5460670567181132, correct: 50
+Epoch: 480/500, loss: 1.5375696956230795, correct: 50
+Epoch: 490/500, loss: 1.5405573552127267, correct: 50
+Epoch: 500/500, loss: 1.5489788565304081, correct: 50
+
+Time per epoch: 0.147s.
+
+
+3. Split
+
+
+
+
+
+
