@@ -84,7 +84,7 @@ Epoch: 480/500, loss: 1.0983679071006964, correct: 50
 Epoch: 490/500, loss: 1.0610191473698982, correct: 50
 Epoch: 500/500, loss: 1.0255816962379973, correct: 50
 
-Time per epoch: 0.150s. 
+Time per epoch: 0.150s.
 
 
 2. Diag
@@ -277,7 +277,7 @@ Epoch: 480/500, loss: 11.486945062534835, correct: 45
 Epoch: 490/500, loss: 11.530177987610212, correct: 45
 Epoch: 500/500, loss: 11.994459710171569, correct: 45
 
-Time per epoch: 0.719s. 
+Time per epoch: 0.719s.
 
 
 
