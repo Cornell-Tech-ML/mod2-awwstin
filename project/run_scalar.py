@@ -23,7 +23,7 @@ class Network(minitorch.Module):
         end = [h.relu() for h in self.layer2.forward(middle)]
         # Pass the output through the third layer and apply Sigmoid activation
         return self.layer3.forward(end)[0].sigmoid()
-    
+
 class Linear(minitorch.Module):
     def __init__(self, in_size, out_size):
         super().__init__()
@@ -46,7 +46,7 @@ class Linear(minitorch.Module):
                     f"bias_{j}", minitorch.Scalar(2 * (random.random() - 0.5))
                 )
             )
-    
+
     @staticmethod
     def get_xavier_weights(fan_in: int, fan_out: int):
         n = fan_in * fan_out
@@ -58,7 +58,7 @@ class Linear(minitorch.Module):
 
         # Calculate desired variance
         desired_variance = 2/ (fan_in + fan_out)
-        
+
         # Adjust the variance to be the desired variance
         actual_variance = np.var(xavier_weights)
         scaling_factor = np.sqrt(desired_variance / actual_variance)

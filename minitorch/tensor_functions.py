@@ -39,15 +39,15 @@ class Function:
         return cls.forward(ctx, *inps)  # type: ignore
 
     @classmethod
-    def apply(cls, *vals: 'Tensor') -> 'Tensor':
+    def apply(cls, *vals: "Tensor") -> "Tensor":
         """Call the forward function and track history"""
         raw_vals = []
         need_grad = False
         tensor_vals = []
         for v in vals:
-            if hasattr(v, 'requires_grad') and v.requires_grad():
+            if hasattr(v, "requires_grad") and v.requires_grad():
                 need_grad = True
-            if hasattr(v, 'detach'):
+            if hasattr(v, "detach"):
                 raw_vals.append(v.detach())
                 tensor_vals.append(v)
             else:
@@ -64,10 +64,10 @@ class Function:
             back = minitorch.History(cls, ctx, tensor_vals)
             # Local import to avoid circular dependencies and NameError
             from .tensor import Tensor
+
             return Tensor(c._tensor, back, backend=c.backend)
         else:
             return c
-
 
 
 class Neg(Function):
@@ -131,6 +131,7 @@ class Mul(Function):
         t1, t2 = ctx.saved_values
         return grad_output * t2, grad_output * t1
 
+
 class Sigmoid(Function):
     @staticmethod
     def forward(ctx: Context, t1: Tensor) -> Tensor:
@@ -146,6 +147,7 @@ class Sigmoid(Function):
         grad_input = grad_output * sigmoid_t1 * (1 - sigmoid_t1)
         return grad_input
 
+
 class ReLU(Function):
     @staticmethod
     def forward(ctx: Context, t1: Tensor) -> Tensor:
@@ -158,6 +160,7 @@ class ReLU(Function):
         """Backward pass for ReLU operation."""
         (t1,) = ctx.saved_values
         return t1.f.relu_back_zip(t1, grad_output)
+
 
 class Log(Function):
     @staticmethod
@@ -172,6 +175,7 @@ class Log(Function):
         (t1,) = ctx.saved_values
         return grad_output / t1
 
+
 class Exp(Function):
     @staticmethod
     def forward(ctx: Context, t1: Tensor) -> Tensor:
@@ -185,6 +189,7 @@ class Exp(Function):
         """Backward pass for exponential operation."""
         (exp_t1,) = ctx.saved_values
         return grad_output * exp_t1
+
 
 class Sum(Function):
     @staticmethod
@@ -202,6 +207,7 @@ class Sum(Function):
             grad_input = grad_input.unsqueeze(dim)
         return grad_input.expand_to_shape(shape)
 
+
 class LT(Function):
     @staticmethod
     def forward(ctx: Context, t1: Tensor, t2: Tensor) -> Tensor:
@@ -213,6 +219,7 @@ class LT(Function):
         """Backward pass for less than operation."""
         # The derivative of comparison operations is zero
         return grad_output * 0, grad_output * 0
+
 
 class EQ(Function):
     @staticmethod
@@ -226,11 +233,13 @@ class EQ(Function):
         # The derivative of comparison operations is zero
         return grad_output * 0, grad_output * 0
 
+
 class IsClose(Function):
     @staticmethod
     def forward(ctx: Context, t1: Tensor, t2: Tensor) -> Tensor:
         """Forward pass for is close operation."""
         return t1.f.is_close_zip(t1, t2)
+
 
 class Permute(Function):
     @staticmethod
@@ -248,8 +257,6 @@ class Permute(Function):
         for i, j in enumerate(order):
             inv_order[j] = i
         return grad_output._new(grad_output._tensor.permute(*inv_order))
-
-
 
 
 class View(Function):
@@ -431,6 +438,7 @@ def grad_central_difference(
     Returns:
     -------
         Approximated gradient value
+
     """
     x = vals[arg]
     up = zeros(x.shape)
