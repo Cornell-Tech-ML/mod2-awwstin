@@ -10,6 +10,7 @@ import numpy as np
 from . import operators
 from .autodiff import Context, Variable, backpropagate
 from .tensor_data import TensorData
+from .tensor_ops import TensorOps, TensorBackend
 
 # Comment these out if not yet implemented
 from .tensor_functions import (
@@ -248,6 +249,45 @@ class Tensor:
         if not isinstance(other, Tensor):
             other = self.__class__.from_scalar(other, backend=self.backend)
         return other - self
+    
+    def unsqueeze(self, dim: int) -> 'Tensor':
+        """Return a new Tensor with a dimension of size one inserted at the specified position.
+
+        Args:
+        ----
+            dim (int): The index at which to insert the singleton dimension.
+
+        Returns:
+        -------
+            Tensor: A new Tensor with the singleton dimension inserted.
+
+        """
+        # Handle negative dimensions
+        if dim < 0:
+            dim += len(self.shape) + 1  # +1 because we're adding a new dimension
+
+        # Check if the dimension is within the valid range
+        if not (0 <= dim <= len(self.shape)):
+            raise IndexError(f"Dimension out of range (expected to be in range of [{-len(self.shape) - 1}, {len(self.shape)}], but got {dim})")
+
+        # Compute the new shape by inserting 1 at the specified dimension
+        new_shape = list(self.shape)
+        new_shape.insert(dim, 1)
+
+        # Compute the new strides by inserting a stride corresponding to the new dimension
+        # For simplicity, you can set the stride for the new dimension to the product of the strides
+        # Alternatively, you may need to adjust this based on your implementation of TensorData
+        new_strides = list(self._tensor.strides)
+        if dim < len(new_strides):
+            new_strides.insert(dim, new_strides[dim] * new_shape[dim + 1])
+        else:
+            new_strides.append(1)  # For the last dimension
+
+        # Create a new TensorData with the new shape and strides
+        new_tensor_data = TensorData(self._tensor._storage, tuple(new_shape), tuple(new_strides))
+
+        # Return a new Tensor with the updated TensorData and the same backend
+        return Tensor(new_tensor_data, backend=self.backend)
 
     def zeros(self, shape: Optional[UserShape] = None) -> Tensor:
         """Create a tensor filled with zeros.
@@ -300,7 +340,7 @@ class Tensor:
 
         """
         if backend is None:
-            backend = TensorBackend()
+            backend = TensorBackend(ops=TensorOps)
         data = TensorData(np.array([value]), (1,), (1,))
         return cls(data, backend=backend)
 
@@ -444,7 +484,7 @@ class Tensor:
         """Reverse multiplication: (scalar) * Tensor."""
         return self.__mul__(other)
 
-    def all(self, dim: int = None) -> Tensor:
+    def all(self, dim: Optional[int] = None) -> Tensor:
         """Check if all elements are True along a given dimension.
 
         Args:
@@ -459,7 +499,8 @@ class Tensor:
         if dim is not None:
             return All.apply(self, dim)
         else:
-            return All.apply(self.contiguous().view(int(operators.prod(self.shape))), 0)
+            reshaped_tensor = self.contiguous().view(int(operators.prod(self.shape)))
+            return All.apply(reshaped_tensor, 0)
 
     def is_close(self, other: TensorLike) -> Tensor:
         """Check if all elements are close to the corresponding elements of another tensor.
@@ -492,7 +533,7 @@ class Tensor:
         """Apply the exponential function to the tensor."""
         return Exp.apply(self)
 
-    def sum(self, dim: int = None) -> Tensor:
+    def sum(self, dim: Optional[int] = None) -> Tensor:
         """Sum the elements of the tensor along a given dimension.
 
         Args:
@@ -509,7 +550,7 @@ class Tensor:
         else:
             return Sum.apply(self, dim)
 
-    def mean(self, dim: int = None) -> Tensor:
+    def mean(self, dim: Optional[int] = None) -> Tensor:
         """Compute the mean of the tensor along a given dimension.
 
         Args:
@@ -550,7 +591,8 @@ class Tensor:
             Tensor: The reshaped tensor.
 
         """
-        shape_tensor = Tensor.make(shape, (len(shape),), backend=self.backend)
+        shape_list = list(map(float, shape))
+        shape_tensor = Tensor.make(shape_list, (len(shape),), backend=self.backend)
         return View.apply(self, shape_tensor)
 
     def zero_grad_(self) -> None:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Iterable, Tuple, Protocol
+from typing import Any, Iterable, Tuple, Protocol, Optional
 
 
 # ## Task 1.1
@@ -141,6 +141,7 @@ class Context:
 
     no_grad: bool = False
     saved_values: Tuple[Any, ...] = ()
+    dim: Optional[int] = None
 
     def save_for_backward(self, *values: Any) -> None:
         """Store the given `values` if they need to be used during backpropagation."""

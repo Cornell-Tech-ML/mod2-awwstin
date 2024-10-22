@@ -39,7 +39,7 @@ class Function:
         return cls.forward(ctx, *inps)  # type: ignore
 
     @classmethod
-    def apply(cls, *vals: "Tensor") -> "Tensor":
+    def apply(cls, *vals: Any) -> Tensor:
         """Call the forward function and track history"""
         raw_vals = []
         need_grad = False

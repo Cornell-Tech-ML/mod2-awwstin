@@ -3,7 +3,7 @@
 import math
 
 # ## Task 0.1
-from typing import Callable, Iterable, List, Any
+from typing import Callable, Iterable, List, Any, Sequence, Union
 from functools import reduce as py_reduce
 #
 # Implementation of a prelude of elementary functions.
@@ -176,6 +176,6 @@ def sum(lst: List[float]) -> float:
 
 
 # - prod: take the product of lists
-def prod(lst: List[float]) -> float:
-    """Calculate the product of all elements in a list using reduce"""
+def prod(lst: Sequence[Union[int, float]]) -> float:
+    """Calculate the product of all elements in a sequence using reduce"""
     return reduce(lambda x, y: x * y, lst)
