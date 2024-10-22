@@ -234,7 +234,7 @@ class Tensor:
             Tensor: Result of the subtraction.
         """
         if not isinstance(other, Tensor):
-            other = self.__class__(other, backend=self.backend)
+            other = self.__class__.from_scalar(other, backend=self.backend)
         return other - self
     
     
@@ -266,6 +266,22 @@ class Tensor:
     def detach(self) -> Tensor:
         """Detach from backprop"""
         return Tensor(self._tensor, backend=self.backend)
+    
+    @classmethod
+    def from_scalar(cls, value: Union[int, float], backend: Optional[TensorBackend] = None) -> Tensor:
+        """Create a Tensor from a scalar value.
+
+        Args:
+            value (int or float): The scalar value.
+            backend (TensorBackend, optional): The backend to use.
+
+        Returns:
+            Tensor: A new Tensor instance representing the scalar.
+        """
+        if backend is None:
+            backend = TensorBackend()
+        data = TensorData(np.array([value]), (1,), (1,))
+        return cls(data, backend=backend)
 
     # Variable elements for backprop
 
