@@ -204,6 +204,40 @@ class Tensor:
         return Tensor.make(out._tensor._storage, self.shape, backend=self.backend)
         # END CODE CHANGE (2021)
 
+    def expand_to_shape(self, shape: Tuple[int, ...]) -> Tensor:
+        """Expand this tensor to the desired shape.
+
+        Args:
+            shape (tuple of int): The desired expanded size.
+
+        Returns:
+            Tensor: A new tensor with expanded size.
+        """
+        # Case 1: Both the same shape.
+        if self.shape == shape:
+            return self
+
+        # Implement the logic to expand self to the new shape.
+        true_shape = TensorData.shape_broadcast(self.shape, shape)
+        buf = self.zeros(true_shape)
+        self.backend.id_map(self, buf)
+        return buf
+
+
+    def __rsub__(self, other: TensorLike) -> Tensor:
+        """Reverse subtraction: (scalar) - Tensor.
+
+        Args:
+            other (int, float, or Tensor): The left operand.
+
+        Returns:
+            Tensor: Result of the subtraction.
+        """
+        if not isinstance(other, Tensor):
+            other = self.__class__(other, backend=self.backend)
+        return other - self
+    
+    
     def zeros(self, shape: Optional[UserShape] = None) -> Tensor:
         """Create a tensor filled with zeros.
 
